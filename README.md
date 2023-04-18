@@ -23,3 +23,5 @@ The hardest part of this assignment will probably be fine tuning the genes that 
 # How to Run
 
 You need to install the `pyxel` python module with `pip install pyxel`. This is for the graphics processing of the simulation.
+
+Run the program by typing `pyxel run genertic_algorithm.py`

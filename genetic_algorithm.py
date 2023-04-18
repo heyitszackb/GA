@@ -118,7 +118,7 @@ def spawnFood(food,num_food,width,height):
 
 def runSimulation(population,num_ticks):
     # PROBLEM LIST:
-    # Food array gets really big...get rid of None types
+    # we could probably optimize this whole thing somehow
     # Food spawning on top of dead creatures
     # What to do with dead creatures?
     width = 500
