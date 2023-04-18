@@ -129,7 +129,8 @@ import math
 
 class App:
     def __init__(self):
-        pyxel.init(int((math.sqrt(POPULATION_SIZE))*20), int((math.sqrt(POPULATION_SIZE))*20))
+        # pyxel.init(int((math.sqrt(POPULATION_SIZE))*20), int((math.sqrt(POPULATION_SIZE))*20))
+        pyxel.init(416,544)
         self.population = initPopulation(POPULATION_SIZE)
         self.generation_num = 0
         pyxel.run(self.update, self.draw)

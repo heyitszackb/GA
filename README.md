@@ -19,3 +19,7 @@ Because we are using a genetic algorithm, we will use no training data, but rath
 ### Thoughts
 
 The hardest part of this assignment will probably be fine tuning the genes that we will use for each species so that one does not quickly dominate the other. We will also need to play around with the environment (food, obstacles, water, etc).
+
+# How to Run
+
+You need to install the `pyxel` python module with `pip install pyxel`. This is for the graphics processing of the simulation.
