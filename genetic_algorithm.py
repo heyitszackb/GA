@@ -3,7 +3,7 @@ import random
 import matplotlib.pyplot as plt
 
 
-POPULATION_SIZE = 2000
+POPULATION_SIZE = 101
 MUTATION_RATE = 0.001
 CROSSOVER_RATE = 0.7
 GENERATIONS = 500
@@ -129,8 +129,7 @@ import math
 
 class App:
     def __init__(self):
-        # pyxel.init(int((math.sqrt(POPULATION_SIZE))*20), int((math.sqrt(POPULATION_SIZE))*20))
-        pyxel.init(416,544)
+        pyxel.init(int((math.sqrt(POPULATION_SIZE))*20), int((math.sqrt(POPULATION_SIZE))*20))
         self.population = initPopulation(POPULATION_SIZE)
         self.generation_num = 0
         pyxel.run(self.update, self.draw)
@@ -142,12 +141,8 @@ class App:
     def draw(self):
         pyxel.cls(0)
         for i in range(len(self.population)):
-            # for every circle in the population, draw it on the screen in a 10x10 grid with no space between them
-                    # calculate x and y coordinates for the circle based on its position in the grid
             x = (i % int(math.sqrt(POPULATION_SIZE))) * 20
             y = (i // int(math.sqrt(POPULATION_SIZE))) * 20
-            
-            # draw the circle using the Pyxel library
             pyxel.circ(x + 10, y + 10, self.population[i].getSize()/2, 7)
 
 App()
