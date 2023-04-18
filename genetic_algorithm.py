@@ -3,7 +3,7 @@ import random
 import matplotlib.pyplot as plt
 
 
-POPULATION_SIZE = 101
+POPULATION_SIZE = 200
 MUTATION_RATE = 0.001
 CROSSOVER_RATE = 0.7
 GENERATIONS = 500
@@ -13,9 +13,12 @@ GENERATIONS = 500
 class Creature:
     def __init__(self, size):
         self.size = size
+        self.energy = 500
+        self.x = 0
+        self.y = 0
     
     def getFitness(self):
-        return self.size
+        return self.energy
 
     def setSize(self,newSize):
         self.size = newSize
@@ -23,6 +26,23 @@ class Creature:
     def getSize(self):
         return self.size
 
+    def setCoords(self,x,y):
+        self.x = x
+        self.y = y
+    
+    def getCoords(self):
+        return self.x,self.y
+
+class Food:
+    def __init__(self):
+        self.size = 2
+        self.energy = 50
+        self.x = 0
+        self.y = 0
+
+    def setCoords(self,x,y):
+        self.x = x
+        self.y = y
 
 def initPopulation(population_size):
     population = []
@@ -42,13 +62,81 @@ def calcPopFit(population):
     return total_fitness / len(population)
 
 
-def runSimulation(population):
+def initPopCoords(population,width,height):
+    for i in range(len(population)):
+        x = random.randint(0,width)
+        y = random.randint(0,height)
+        population[i].setCoords(x,y)
+    return population
+
+def initFoods(num_food,width,height):
+    food = []
+    for i in range(num_food):
+        x = random.randint(0,width)
+        y = random.randint(0,height)
+        f = Food()
+        f.setCoords(x,y)
+        food.append(f)
+    return food
+
+def movePopulation(population,width,height):
+    speed = 5
+    for i in range(len(population)):
+        currentX,currentY = population[i].getCoords()
+        updateX = random.randint(0,speed)
+        updateY = random.randint(0,speed)
+        if (currentX + updateX < width) and (currentY + updateY < height) and (currentX + updateX > 0) and (currentY + updateY > 0) and (population[i].energy > 0):
+            population[i].setCoords(currentX+updateX,currentY+updateY)
+            population[i].energy -= 1
+    return population
+
+def eatFood(population,food):
+    for i in range(len(population)):
+        for j in range(len(food)):
+            if food[j] == None:
+                continue
+            creatureX,creatureY = population[i].getCoords()
+            foodX,foodY = population[i].getCoords()
+            distanceSqrd = (creatureX - foodX)**2 + (creatureY - foodY)**2
+            if distanceSqrd <= ((population[i].getSize())**2 + (population[i].getSize())**2):
+                population[i].energy += food[j].energy
+                food[j] = None
+    clean_foods = []
+    for i in range(len(food)):
+        if food[i] != None:
+            clean_foods.append(food[i])
+    return population,clean_foods
+
+def spawnFood(food,num_food,width,height):
+    for i in range(num_food):
+        x = random.randint(0,width)
+        y = random.randint(0,height)
+        f = Food()
+        f.setCoords(x,y)
+        food.append(f)
+    return food
+
+def runSimulation(population,num_ticks):
+    # PROBLEM LIST:
+    # Food array gets really big...get rid of None types
+    # Food spawning on top of dead creatures
+    # What to do with dead creatures?
+    width = 500
+    height = 500
+    num_food = 10
+
+    population = initPopCoords(population,width,height)
+    food = initFoods(num_food,width,height)
+    for tick in range(num_ticks):
+        population = movePopulation(population,width,height)
+        population,food = eatFood(population,food)
+        food = spawnFood(food,num_food,width,height)
     return population
 
 def makeNextGen(population, crossover_rate, mutation_rate):
     # run a simulation on the population for one generation
     # //
-    simulatedPopulation = runSimulation(population)
+    simulatedPopulation = runSimulation(population,1000)
     # calculate the fitness for each individual after the generation runs
 
     # create the new generation from the most fit individuals
