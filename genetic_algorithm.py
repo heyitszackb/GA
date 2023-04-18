@@ -116,27 +116,28 @@ def spawnFood(food,num_food,width,height):
         food.append(f)
     return food
 
-def runSimulation(population,num_ticks):
+def runSimulation(population,ticks, width, height, num_food):
     # PROBLEM LIST:
     # we could probably optimize this whole thing somehow
     # Food spawning on top of dead creatures
     # What to do with dead creatures?
-    width = 500
-    height = 500
-    num_food = 10
-
     population = initPopCoords(population,width,height)
     food = initFoods(num_food,width,height)
-    for tick in range(num_ticks):
+    for _ in range(ticks):
         population = movePopulation(population,width,height)
         population,food = eatFood(population,food)
         food = spawnFood(food,num_food,width,height)
+
     return population
 
 def makeNextGen(population, crossover_rate, mutation_rate):
     # run a simulation on the population for one generation
     # //
-    simulatedPopulation = runSimulation(population,1000)
+    simulatedPopulation = runSimulation(population=population,
+                                        ticks=1000,
+                                        width=500,
+                                        height=500,
+                                        num_food=10)
     # calculate the fitness for each individual after the generation runs
 
     # create the new generation from the most fit individuals
@@ -228,6 +229,7 @@ class App:
 
     def draw(self):
         pyxel.cls(0)
+        pyxel.text(0, 0, "Generation: " + str(self.generation_num), 7)
         for i in range(len(self.population)):
             x = (i % int(math.sqrt(POPULATION_SIZE))) * 20
             y = (i // int(math.sqrt(POPULATION_SIZE))) * 20
