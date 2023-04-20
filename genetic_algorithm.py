@@ -1,9 +1,10 @@
 import pyxel
 import random
+import math
 import matplotlib.pyplot as plt
 
 
-POPULATION_SIZE = 200
+POPULATION_SIZE = 10
 MUTATION_RATE = 0.001
 CROSSOVER_RATE = 0.7
 GENERATIONS = 500
@@ -11,8 +12,9 @@ GENERATIONS = 500
 # [0,1,2,3,4]
 
 class Creature:
-    def __init__(self, size):
+    def __init__(self, size, speed):
         self.size = size
+        self.speed = speed
         self.energy = 500
         self.x = 0
         self.y = 0
@@ -44,10 +46,16 @@ class Food:
         self.x = x
         self.y = y
 
+    def getSize(self):
+        return self.size
+
+    def getCoords(self):
+        return self.x,self.y
+
 def initPopulation(population_size):
     population = []
     for _ in range(population_size):
-        population.append(Creature(random.randint(1,21)))
+        population.append(Creature(random.randint(1,21),random.randint(3,10)))
     return population
 
 # def fitness(individual):
@@ -80,11 +88,10 @@ def initFoods(num_food,width,height):
     return food
 
 def movePopulation(population,width,height):
-    speed = 5
     for i in range(len(population)):
         currentX,currentY = population[i].getCoords()
-        updateX = random.randint(0,speed)
-        updateY = random.randint(0,speed)
+        updateX = random.randint(-(population[i].speed),(population[i].speed))
+        updateY = random.randint(-(population[i].speed),(population[i].speed))
         if (currentX + updateX < width) and (currentY + updateY < height) and (currentX + updateX > 0) and (currentY + updateY > 0) and (population[i].energy > 0):
             population[i].setCoords(currentX+updateX,currentY+updateY)
             population[i].energy -= 1
@@ -96,25 +103,29 @@ def eatFood(population,food):
             if food[j] == None:
                 continue
             creatureX,creatureY = population[i].getCoords()
-            foodX,foodY = population[i].getCoords()
+            foodX,foodY = food[j].getCoords()
             distanceSqrd = (creatureX - foodX)**2 + (creatureY - foodY)**2
-            if distanceSqrd <= ((population[i].getSize())**2 + (population[i].getSize())**2):
+            if math.sqrt(distanceSqrd) <= ((population[i].getSize()) + (food[j].getSize())):
                 population[i].energy += food[j].energy
                 food[j] = None
     clean_foods = []
+    # print("FOOD",food)
     for i in range(len(food)):
         if food[i] != None:
             clean_foods.append(food[i])
+    # print("CLEAN FOOD",clean_foods)
     return population,clean_foods
 
 def spawnFood(food,num_food,width,height):
-    for i in range(num_food):
+    for _ in range(num_food):
         x = random.randint(0,width)
         y = random.randint(0,height)
         f = Food()
         f.setCoords(x,y)
         food.append(f)
     return food
+
+
 
 def runSimulation(population,ticks, width, height, num_food):
     # PROBLEM LIST:
@@ -123,6 +134,7 @@ def runSimulation(population,ticks, width, height, num_food):
     # What to do with dead creatures?
     population = initPopCoords(population,width,height)
     food = initFoods(num_food,width,height)
+
     for _ in range(ticks):
         population = movePopulation(population,width,height)
         population,food = eatFood(population,food)
@@ -137,7 +149,7 @@ def makeNextGen(population, crossover_rate, mutation_rate):
                                         ticks=1000,
                                         width=500,
                                         height=500,
-                                        num_food=10)
+                                        num_food=1)
     # calculate the fitness for each individual after the generation runs
 
     # create the new generation from the most fit individuals
@@ -166,7 +178,8 @@ def makeNextGen(population, crossover_rate, mutation_rate):
 def crossover(parent1,parent2, crossover_rate):
     random_crossover_num = random.random()
     if random_crossover_num < crossover_rate:
-        newIndividual = Creature((parent1.getSize() + parent2.getSize())//2)
+        newIndividual = Creature((parent1.getSize() + parent2.getSize())//2,
+                                 (parent1.speed + parent2.speed)//2)
     else:
         newIndividual = parent1
     return newIndividual
@@ -176,6 +189,9 @@ def crossover(parent1,parent2, crossover_rate):
 def mutate(individual, mutation_rate):
     random_mutation_num = random.random()
     if random_mutation_num < mutation_rate:
+        individual.speed += random.randint(-1,1)
+
+
         if individual.getSize() == 1 and individual.getSize() > 21:
             return individual
         else:
@@ -188,16 +204,6 @@ def mutate(individual, mutation_rate):
 
 
 
-def run():
-    x = []
-    y = []
-    population = initPopulation(POPULATION_SIZE)
-    for i in range(GENERATIONS):
-        population = makeNextGen(population, CROSSOVER_RATE, MUTATION_RATE)
-        x.append(i)
-        gen_fitness = calcPopFit(population)
-        y.append(gen_fitness)
-    return x,y
 
 def graph(x, y):
     plt.scatter(x,y)
@@ -218,21 +224,64 @@ import math
 
 class App:
     def __init__(self):
-        pyxel.init(int((math.sqrt(POPULATION_SIZE))*20), int((math.sqrt(POPULATION_SIZE))*20))
-        self.population = initPopulation(POPULATION_SIZE)
+        pyxel.init(500,500)
         self.generation_num = 0
+        self.generations = 20
+        self.tick_num = 0
+        self.numFood = 1
+        self.width = 500
+        self.height = 500
+        self.population = self.run()
+        self.tick_population = initPopCoords(self.population,self.width,self.height)
+        self.food = initFoods(self.numFood,500,500)
         pyxel.run(self.update, self.draw)
 
+    def run(self):
+        population = initPopulation(POPULATION_SIZE)
+        for i in range(self.generations):
+            print("Generation: " + str(i + 1))
+            population = makeNextGen(population, CROSSOVER_RATE, MUTATION_RATE)
+        return population
+
     def update(self):
-        self.population = makeNextGen(self.population, CROSSOVER_RATE, MUTATION_RATE)
-        self.generation_num += 1
+        self.tick_population = movePopulation(self.tick_population,self.width,self.height)
+        self.tick_population,self.food = eatFood(self.tick_population,self.food)
+        if len(self.food) < 50:
+            self.food = spawnFood(self.food,self.numFood,self.width,self.height)
+        self.tick_num += 1
+
 
     def draw(self):
         pyxel.cls(0)
-        pyxel.text(0, 0, "Generation: " + str(self.generation_num), 7)
-        for i in range(len(self.population)):
-            x = (i % int(math.sqrt(POPULATION_SIZE))) * 20
-            y = (i // int(math.sqrt(POPULATION_SIZE))) * 20
-            pyxel.circ(x + 10, y + 10, self.population[i].getSize()/2, 7)
+        for i in range(len(self.tick_population)):
+            x,y = self.tick_population[i].getCoords()
+            pyxel.circ(x,y,self.tick_population[i].getSize(),7)
+        for i in range(len(self.food)):
+            x,y = self.food[i].getCoords()
+            pyxel.circ(x,y,self.food[i].size,8)
+        pyxel.text(5,5,"Population: " + str(len(self.tick_population)),7)
+        pyxel.text(5,10,"Food: " + str(len(self.food)),7)
+        pyxel.text(5,15,"Average Fitness: " + str(calcPopFit(self.tick_population)),7)
+        pyxel.text(5,20,"Tick Number: " + str(self.tick_num),7)
+        
+
+        # pyxel.cls(0)
+        # pyxel.text(0, 0, "Generation: " + str(self.generation_num), 7)
+        # for i in range(len(self.population)):
+        #     x = (i % int(math.sqrt(POPULATION_SIZE))) * 20
+        #     y = (i // int(math.sqrt(POPULATION_SIZE))) * 20
+        #     pyxel.circ(x + 10, y + 10, self.population[i].getSize()/2, 7)
 
 App()
+
+# TODO:
+
+# Create graphing system
+# Add genes
+# Make more efficient?
+    # - decrease tick number and increase generations
+# Consolidate hyperhparameters
+# make speed proportional to energy
+# make the visualization work for selected generations
+# sense gene?
+
