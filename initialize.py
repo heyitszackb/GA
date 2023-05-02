@@ -28,6 +28,7 @@ def initPopulation(population_size):
     population = []
     for _ in range(population_size):
         scale = [round(random.uniform(-1,1),2), round(random.uniform(-1,1),2)]
+        # scale = [0.1,0.2]
         sense = random.randint(INITIAL_SENSE_LOWER_BOUND, INITIAL_SENSE_UPPER_BOUND)
        
         population.append(Creature(random.randint(INITIAL_SIZE_LOWER_BOUND, INITIAL_SIZE_UPPER_BOUND),

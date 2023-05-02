@@ -32,9 +32,13 @@ Run the program by typing `pyxel run genertic_algorithm.py`
 -   Color the top 5 individuals
 -   Somehow track energy...?
 -   See if the population can be generated differently
+    Instead of picking two random parents and making a child from the most fit ones, we could have it
+    select maybe 5 or 10 individuals and chose the top from those to make a child from? Or another system.
+    If a person is dead there should be a low chance that the genetic material passes on.
 -   Get rid of the dead people in the calculations and in the visualization
 -   Food should not spawn on top of creatures ever (should respawn the food if it tries to do that)
 -   Create const booleans for display options (display lines, sense grid, etc)
+-   Slight issue (?). All the creatures have to learn is that having both scale genes be positive is all that they need, they do not have to be closer and closer to 1 (which is fine but we might want to make it harder for them to figure it out?).
 
 # Done
 

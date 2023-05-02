@@ -15,6 +15,7 @@ class Creature:
     def draw(self):
         if self.energy > 0:
             pyxel.circ(self.x,self.y,self.size,7)
+            pyxel.circb(self.x,self.y,self.sense,4)
     
     
     def getFitness(self):
