@@ -1,4 +1,5 @@
 from Const import CREATURE_INITIAL_ENERGY
+import pyxel
 
 class Creature:
     def __init__(self, size, speed, scale, sense):
@@ -10,6 +11,9 @@ class Creature:
         self.sense = sense
         self.scale = scale # [gx,gy]
         self.closestFood = None
+
+    def draw(self):
+        pyxel.circ(self.x,self.y,self.size,7)
     
     
     def getFitness(self):

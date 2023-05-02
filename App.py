@@ -50,21 +50,16 @@ class App:
     def draw(self):
         pyxel.cls(0)
         for i in range(len(self.tick_population)):
-            x,y = self.tick_population[i].getCoords()
-            pyxel.circ(x,y,self.tick_population[i].getSize(),7)
+            self.tick_population[i].draw()
             if self.tick_population[i].closestFood:
                 pyxel.line(self.tick_population[i].getCoords()[0],
                         self.tick_population[i].getCoords()[1], 
                         self.tick_population[i].closestFood.getCoords()[0],
                         self.tick_population[i].closestFood.getCoords()[1],
                         7) 
-            # pyxel.circb(self.tick_population[i].getCoords()[0],
-            #             self.tick_population[i].getCoords()[1],
-            #             self.tick_population[i].sense, 4)
                 
         for i in range(len(self.food)):
-            x,y = self.food[i].getCoords()
-            pyxel.circ(x,y,self.food[i].size,8)
+            self.food[i].draw()
 
         pyxel.text(5,5,"Population: " + str(len(self.tick_population)),7)
         pyxel.text(5,10,"Food: " + str(len(self.food)),7)
