@@ -16,6 +16,7 @@ import math
 class App:
     def __init__(self):
         pyxel.init(WIDTH,HEIGHT)
+        pyxel.load("sim.pyxres")
         self.generation_num = 0
         self.generations = GENERATIONS_TO_RUN
         self.tick_num = 0

@@ -1,5 +1,6 @@
 from moveInividual import moveIndividual
 import math
+import pyxel
 
 def updatePopulation(population,food,width,height):
     for i in range(len(population)):
