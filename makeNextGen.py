@@ -29,3 +29,8 @@ def makeNextGen(population, crossover_rate, mutation_rate):
         new_gen.append(mutate(child, mutation_rate))
 
     return new_gen
+
+
+
+# if you are dead, your genetic material has a very low chance of being passed on, but if you are
+# alive, you have a very high chance of passing on your genetic material

@@ -51,7 +51,7 @@ class App:
         pyxel.cls(0)
         for i in range(len(self.tick_population)):
             self.tick_population[i].draw()
-            if self.tick_population[i].closestFood:
+            if self.tick_population[i].closestFood and self.tick_population[i].energy > 0:
                 pyxel.line(self.tick_population[i].getCoords()[0],
                         self.tick_population[i].getCoords()[1], 
                         self.tick_population[i].closestFood.getCoords()[0],

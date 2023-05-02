@@ -13,7 +13,8 @@ class Creature:
         self.closestFood = None
 
     def draw(self):
-        pyxel.circ(self.x,self.y,self.size,7)
+        if self.energy > 0:
+            pyxel.circ(self.x,self.y,self.size,7)
     
     
     def getFitness(self):
