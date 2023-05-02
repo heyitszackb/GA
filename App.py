@@ -7,6 +7,7 @@ from updatePopulation import updatePopulation
 from spawnFood import spawnFood
 
 from Const import WIDTH, HEIGHT, TICKS, GENERATIONS_TO_RUN
+import time
 
 
 import pyxel
@@ -31,14 +32,22 @@ class App:
         pyxel.run(self.update, self.draw)
 
     def run(self):
+        overallStart = time.perf_counter()
+
         population = initPopulation(POPULATION_SIZE)
         for i in range(self.generations):
-            print("Generation: " + str(i + 1))
+            generationStart = time.perf_counter()
             population = makeNextGen(population, CROSSOVER_RATE, MUTATION_RATE)
 
             self.avg_fitnesses.append(calcPop(population,"fitness"))
             self.sense.append(calcPop(population,"sense"))
             self.generations_arr.append(i)
+            generationEnd = time.perf_counter()
+            print("Time to run generation: " + str(i + 1) + " " + str(round(generationEnd - generationStart,2)))
+
+        overallEnd = time.perf_counter()
+        print("Total time to run: " + str(round(overallEnd - overallStart,2)))
+        print("Average generation time: " + str(round((overallEnd - overallStart)/self.generations,2)))
         # graph(self.generations_arr,self.avg_fitnesses)
         graph(self.generations_arr,self.sense)
         return population
