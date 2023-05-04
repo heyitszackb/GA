@@ -40,7 +40,7 @@ class App:
             population = makeNextGen(population, CROSSOVER_RATE, MUTATION_RATE)
 
             self.avg_fitnesses.append(calcPop(population,"fitness"))
-            self.sense.append(calcPop(population,"sense"))
+            self.sense.append(calcPop(population,"fitness"))
             self.generations_arr.append(i)
             generationEnd = time.perf_counter()
             print("Time to run generation: " + str(i + 1) + " " + str(round(generationEnd - generationStart,2)))
@@ -48,8 +48,8 @@ class App:
         overallEnd = time.perf_counter()
         print("Total time to run: " + str(round(overallEnd - overallStart,2)))
         print("Average generation time: " + str(round((overallEnd - overallStart)/self.generations,2)))
-        # graph(self.generations_arr,self.avg_fitnesses)
-        graph(self.generations_arr,self.sense)
+        graph(self.generations_arr,self.avg_fitnesses)
+        # graph(self.generations_arr,self.sense)
         return population
 
     def update(self):
