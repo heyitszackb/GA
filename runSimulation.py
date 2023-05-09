@@ -1,6 +1,7 @@
 from initialize import initPopCoords, initFoods
 from spawnFood import spawnFood
 from updatePopulation import updatePopulation
+from sortPop import sortPop
 
 def runSimulation(population,ticks, width, height):
     # PROBLEM LIST:

@@ -11,11 +11,16 @@ class Creature:
         self.sense = sense
         self.scale = scale # [gx,gy]
         self.closestFood = None
+        self.is_best_individual = False
 
     def draw(self):
         if self.energy > 0:
-            pyxel.circ(self.x,self.y,self.size,7)
-            pyxel.circb(self.x,self.y,self.sense,4)
+            if self.is_best_individual:
+                pyxel.circ(self.x,self.y,self.size,11)
+                pyxel.circb(self.x,self.y,self.sense,11)
+            else:
+                pyxel.circ(self.x,self.y,self.size,7)
+                pyxel.circb(self.x,self.y,self.sense,4)
     
     
     def getFitness(self):
