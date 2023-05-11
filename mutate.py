@@ -1,8 +1,19 @@
 import random
 
-from Const import INITIAL_SENSE_UPPER_BOUND, INITIAL_SENSE_LOWER_BOUND, INITIAL_SIZE_LOWER_BOUND, INITIAL_SIZE_UPPER_BOUND \
+from Const import INITIAL_SENSE_UPPER_BOUND, INITIAL_SENSE_LOWER_BOUND, INITIAL_SIZE_LOWER_BOUND, INITIAL_SIZE_UPPER_BOUND, INITIAL_SPEED_LOWER_BOUND, INITIAL_SPEED_UPPER_BOUND \
 
 def mutateSpeed(individual):
+    if individual.speed == INITIAL_SIZE_LOWER_BOUND or individual.speed > INITIAL_SPEED_UPPER_BOUND:
+            return individual
+    else:
+        num = random.randint(0,1)
+        if num == 0 and individual.speed < INITIAL_SPEED_LOWER_BOUND:
+            individual.setSize(individual.speed + 1)
+        else:
+            individual.setSize(individual.speed - 1)
+    return individual
+
+
     individual.speed += random.randint(-1,1)
     return individual
 
@@ -38,7 +49,7 @@ def mutate(individual, mutation_rate):
     if random_mutation_num < mutation_rate:
         # random_func = random.choice([mutateSpeed,mutateSize,mutateScales])
         # random_func(individual)
-        mutateScales(individual)
-        mutateSize(individual)
-        mutateSpeed(individual)
+        individual = mutateScales(individual)
+        individual = mutateSize(individual)
+        individual = mutateSpeed(individual)
     return individual
