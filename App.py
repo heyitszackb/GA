@@ -58,9 +58,9 @@ class App:
                         self.tick_population[i].closestFood.getCoords()[0],
                         self.tick_population[i].closestFood.getCoords()[1],
                         7) 
-            # pyxel.circb(self.tick_population[i].getCoords()[0],
-            #             self.tick_population[i].getCoords()[1],
-            #             self.tick_population[i].sense, 4)
+            pyxel.circb(self.tick_population[i].getCoords()[0],
+                        self.tick_population[i].getCoords()[1],
+                        self.tick_population[i].sense, 4)
                 
         for i in range(len(self.food)):
             x,y = self.food[i].getCoords()
