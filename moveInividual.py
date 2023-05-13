@@ -31,7 +31,7 @@ def moveIndividual(individual, width, height, closestFood):
                     # print("energy:",individual.energy)
                     individual.setCoords(creatureX + moveX, creatureY + moveY)
                     # individual.energy -= individual.speed+individual.sense / 50
-                    individual.energy -= individual.speed / INITIAL_SPEED_UPPER_BOUND
+                    individual.energy -= individual.speed / 5
                     # individual.energy -= 1
                     return individual
             
