@@ -1,9 +1,6 @@
 import random
 import math
 
-def moveIndividualRandom():
-    pass
-
 def moveIndividual(individual, width, height, closestFood):
     
     creatureX,creatureY = individual.getCoords()
