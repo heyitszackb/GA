@@ -1,7 +1,8 @@
 from App import App
 from MainRunner import MainRunner
+from Const import GENERATIONS_TO_RUN
 
-mainRunner = MainRunner([0])
+mainRunner = MainRunner([GENERATIONS_TO_RUN - 1])
 generation_data = mainRunner.getGenerationData()
 
 
@@ -11,8 +12,5 @@ for i in range(len(generation_data)):
 
 
 
-
-# Add visualization of best creatures
 # Add combination of genes
-# Add visualization of different generations
 
