@@ -9,7 +9,7 @@ class Food:
         self.y = 0
 
     def draw(self):
-        pyxel.circ(self.x,self.y,self.size,8)
+        pyxel.circ(self.x,self.y,self.size,3)
 
     def setCoords(self,x,y):
         self.x = x

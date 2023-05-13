@@ -36,14 +36,19 @@ class App:
 
     def draw(self):
         pyxel.cls(0)
+        thirdOfColors = int(len(self.population)/3)
         for i in range(len(self.population)):
+            if i <= thirdOfColors: self.population[i].color = 1
+            elif i <= thirdOfColors*2: self.population[i].color = 5
+            else: self.population[i].color = 6
             self.population[i].draw()
+            
             if self.population[i].closestFood and self.population[i].energy > 0:
                 pyxel.line(self.population[i].getCoords()[0],
                         self.population[i].getCoords()[1], 
                         self.population[i].closestFood.getCoords()[0],
                         self.population[i].closestFood.getCoords()[1],
-                        7) 
+                        self.population[i].color) 
                 
         for i in range(len(self.food)):
             self.food[i].draw()

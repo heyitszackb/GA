@@ -1,6 +1,6 @@
 import random
 import math
-from Const 
+from Const import INITIAL_SPEED_UPPER_BOUND
 
 def moveIndividual(individual, width, height, closestFood):
     
@@ -31,7 +31,7 @@ def moveIndividual(individual, width, height, closestFood):
                     # print("energy:",individual.energy)
                     individual.setCoords(creatureX + moveX, creatureY + moveY)
                     # individual.energy -= individual.speed+individual.sense / 50
-                    individual.energy -= individual.speed / 5
+                    individual.energy -= individual.speed / 6
                     # individual.energy -= 1
                     return individual
             
@@ -41,7 +41,7 @@ def moveIndividual(individual, width, height, closestFood):
     (creatureX + updateX > 0) and (creatureY + updateY > 0) and (individual.energy > 0):
         individual.setCoords(creatureX+updateX,creatureY+updateY)
         # individual.energy -= individual.speed+individual.sense / 50
-        individual.energy -= individual.speed / 5
+        individual.energy -= individual.speed / 6
 
     return individual
 

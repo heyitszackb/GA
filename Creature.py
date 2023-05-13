@@ -10,6 +10,7 @@ class Creature:
         self.is_best_individual = False
         self.x = 0
         self.y = 0
+        self.color = 7
 
         # Genes
         scaledSpeed = (speed - INITIAL_SPEED_LOWER_BOUND) / (INITIAL_SPEED_UPPER_BOUND-INITIAL_SPEED_LOWER_BOUND)
@@ -20,18 +21,15 @@ class Creature:
         self.sense = int((scaledSense * (INITIAL_SENSE_UPPER_BOUND - INITIAL_SENSE_LOWER_BOUND)) + INITIAL_SENSE_LOWER_BOUND)
         self.size = size
         self.scale = scale # [gx,gy]
-         
-         # Maybe we switch scaledSpeed and scaledSense orders in subtraction?
-         # maybe we need to penalize a bigger sense range more?
+        
     def draw(self):
         if self.energy > 0:
             if self.is_best_individual:
-                pyxel.circ(self.x,self.y,self.size,11)
-                pyxel.circb(self.x,self.y,self.sense,11)
-            else:
                 pyxel.circ(self.x,self.y,self.size,7)
-                pyxel.circb(self.x,self.y,self.sense,4)
-    
+                pyxel.circb(self.x,self.y,self.sense,7)
+            else:
+                pyxel.circ(self.x,self.y,self.size,self.color)
+                pyxel.circb(self.x,self.y,self.sense,self.color)
     
     def getFitness(self):
         return self.energy
@@ -41,7 +39,7 @@ class Creature:
     
     def getSize(self):
         return self.size
-
+    
     def setCoords(self,x,y):
         self.x = x
         self.y = y
