@@ -1,18 +1,28 @@
-from Const import CREATURE_INITIAL_ENERGY
+from Const import CREATURE_INITIAL_ENERGY, INITIAL_SENSE_LOWER_BOUND, INITIAL_SENSE_UPPER_BOUND, INITIAL_SPEED_LOWER_BOUND, INITIAL_SPEED_UPPER_BOUND
 import pyxel
 
 class Creature:
     def __init__(self, size, speed, scale, sense):
-        self.size = size
-        self.speed = speed
         self.energy = CREATURE_INITIAL_ENERGY
-        self.x = 0
-        self.y = 0
-        self.sense = sense
-        self.scale = scale # [gx,gy]
+
+        # Variables
         self.closestFood = None
         self.is_best_individual = False
+        self.x = 0
+        self.y = 0
 
+        # Genes
+        scaledSpeed = (speed - INITIAL_SPEED_LOWER_BOUND) / (INITIAL_SPEED_UPPER_BOUND-INITIAL_SPEED_LOWER_BOUND)
+        scaledSense = (sense - INITIAL_SENSE_LOWER_BOUND) / (INITIAL_SENSE_UPPER_BOUND-INITIAL_SENSE_LOWER_BOUND)
+        tmpScaledSpeed = scaledSpeed - scaledSense if scaledSpeed - scaledSense > 0 else 0
+        scaledSense = scaledSense - scaledSpeed if scaledSense - scaledSpeed > 0 else 0
+        self.speed = int((tmpScaledSpeed * (INITIAL_SPEED_UPPER_BOUND - INITIAL_SPEED_LOWER_BOUND)) + INITIAL_SPEED_LOWER_BOUND)
+        self.sense = int((scaledSense * (INITIAL_SENSE_UPPER_BOUND - INITIAL_SENSE_LOWER_BOUND)) + INITIAL_SENSE_LOWER_BOUND)
+        self.size = size
+        self.scale = scale # [gx,gy]
+         
+         # Maybe we switch scaledSpeed and scaledSense orders in subtraction?
+         # maybe we need to penalize a bigger sense range more?
     def draw(self):
         if self.energy > 0:
             if self.is_best_individual:

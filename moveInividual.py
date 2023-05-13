@@ -1,5 +1,6 @@
 import random
 import math
+from Const 
 
 def moveIndividual(individual, width, height, closestFood):
     
@@ -29,7 +30,9 @@ def moveIndividual(individual, width, height, closestFood):
                     # print("moveY:",moveY)
                     # print("energy:",individual.energy)
                     individual.setCoords(creatureX + moveX, creatureY + moveY)
-                    individual.energy -= 1
+                    # individual.energy -= individual.speed+individual.sense / 50
+                    individual.energy -= individual.speed / INITIAL_SPEED_UPPER_BOUND
+                    # individual.energy -= 1
                     return individual
             
     updateX = random.randint(-(individual.speed),(individual.speed))
@@ -37,7 +40,8 @@ def moveIndividual(individual, width, height, closestFood):
     if (creatureX + updateX < width) and (creatureY + updateY < height) and \
     (creatureX + updateX > 0) and (creatureY + updateY > 0) and (individual.energy > 0):
         individual.setCoords(creatureX+updateX,creatureY+updateY)
-        individual.energy -= 1
+        # individual.energy -= individual.speed+individual.sense / 50
+        individual.energy -= individual.speed / 5
 
     return individual
 

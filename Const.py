@@ -1,6 +1,6 @@
 WIDTH = 1400
 HEIGHT = 800
-TICKS = 1000
+TICKS = 1500
 GENERATIONS_TO_RUN = 20
 
 
@@ -21,7 +21,10 @@ INITIAL_SIZE_LOWER_BOUND = 1
 INITIAL_SIZE_UPPER_BOUND = 21
 
 INITIAL_SPEED_LOWER_BOUND = 2
-INITIAL_SPEED_UPPER_BOUND = 15
+INITIAL_SPEED_UPPER_BOUND = 20
 
 INITIAL_SENSE_LOWER_BOUND = 10
-INITIAL_SENSE_UPPER_BOUND = 180
+INITIAL_SENSE_UPPER_BOUND = 200
+
+# They had MASSIVE sense ranges, but one guy had a huge sense range and was also really fast. 
+# I think our code doesn't prevent them from having both big sense range and being fast, it only makes them decrease slightly
